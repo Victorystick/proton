@@ -1,0 +1,14 @@
+import "core"
+	at
+
+import "./transpile.js"
+	transpile
+
+fn compile ( source target )
+	source
+
+
+fn node-main ( process )
+	compile
+		at 2 process.argv
+		at 3 process.argv
