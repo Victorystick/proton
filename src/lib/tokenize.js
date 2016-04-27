@@ -105,6 +105,17 @@ function char() {
 }
 
 function next() {
+	if ( char() === '\r' ) {
+		index += 1;
+
+		if ( char() === '\n' ) index += 1;
+
+		line += 1;
+		column = 0;
+
+		return char();
+	}
+
 	if ( char() === '\n' ) {
 		line += 1;
 		column = 0;
@@ -121,7 +132,7 @@ function base( tokens ) {
 	while ( index < source.length ) {
 		const c = char();
 
-		if ( c === '\n' ) {
+		if ( c === '\n' || c === '\r' ) {
 			next();
 			continue;
 		}

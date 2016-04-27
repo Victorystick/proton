@@ -42,8 +42,13 @@ describe( 'tokenize', () => {
 		assert.deepEqual( tokenize( '()' ), [ punc( 'left-parens' ), punc( 'right-parens' ), EOF ] );
 	});
 
-	it( 'arrows',() => {
+	it( 'arrows', () => {
 		assert.deepEqual( tokenize( '->->' ), [ arrow(), arrow(), EOF ] );
+	});
+
+	it( 'line-endings', () => {
+		const a = id( 'a' );
+		assert.deepEqual( tokenize( 'a\na\ra\r\n' ), [ a, a, a, EOF ]);
 	});
 
 	describe( 'syntax', () => {

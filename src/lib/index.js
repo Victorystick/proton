@@ -1,4 +1,4 @@
-export { Parser, default as parse } from './parser.js';
+export { Parser, default as parse } from './parse.js';
 
 import * as nodes from './nodes.js';
 

@@ -1,4 +1,4 @@
-import parse from './parser.js';
+import parse from './parse.js';
 import generate from './generate.js';
 
 // The transpilation step includes both parsing and generation.
