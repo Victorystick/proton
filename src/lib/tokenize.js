@@ -71,7 +71,7 @@ export function literal( value, pos ) {
 
 
 let index, line, column;
-let source, locations;
+let source, locations, filename;
 
 export function tokenize( code, options ) {
 	options = options || {};
@@ -80,7 +80,9 @@ export function tokenize( code, options ) {
 	index = 0;
 	line = 1;
 	column = 0;
+
 	locations = options.location || false;
+	filename = options.filename;
 
 	return base( [] );
 }
@@ -94,6 +96,10 @@ function position() {
 
 function complete( pos ) {
 	if ( !locations ) return;
+
+	if ( filename ) {
+		pos.source = filename;
+	}
 
 	pos.end = { line, column };
 	pos.range.push( index );
