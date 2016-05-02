@@ -39,13 +39,29 @@ function raise( msg ) {
 
 export const call = node( 'call', [ 'id', 'args' ]);
 
+Object.assign( call, {
+	analyse ( scope ) {
+		this.id.analyse( scope );
+		this.args.forEach( arg => arg.analyse( scope ) );
+	},
+
+	compile ( buffer, scope ) {
+		this.id.compile( buffer, scope );
+
+		buffer.push( '(' );
+		this.args.forEach( arg => {
+			arg.compile( buffer, scope );
+			buffer.push(', '); // push a ', '
+		});
+		buffer.pop(); // remove the last ', '
+		buffer.push( ')' );
+	},
+});
+
 export const data = node( 'data', [ 'id', 'fields' ]);
 
 Object.assign( data, {
-	analyse ( scope ) {
-
-	},
-
+	analyse: noop,
 	compile: noop,
 });
 
