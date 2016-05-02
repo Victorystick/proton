@@ -184,6 +184,10 @@ function getType( scope, instance ) {
 match.analyse = function ( scope ) {
 	this.id.analyse( scope );
 
+	if ( !this.expressions.length ) {
+		this.raise( 'empty match' );
+	}
+
 	// TODO: make this check stricter.
 	const instances = this.expressions.map( e => getType( scope, e.typeinstance ) );
 	const last = instances.pop();

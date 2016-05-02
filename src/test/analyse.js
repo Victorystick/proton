@@ -6,7 +6,6 @@ import {
 	file,
 	fn,
 	identifier,
-	literal,
 	match,
 	matchexpr,
 	type,
@@ -55,6 +54,14 @@ describe( 'analyse', () => {
 	});
 
 	describe( 'match', () => {
+		it( 'rejects empty matches', () => {
+			assert.throws( () => {
+				analyse( file([
+					fn( a, [], match( a, [] ) ),
+				]));
+			}, /empty match/);
+		});
+
 		it( 'rejects non-types', () => {
 			assert.throws( () => {
 				analyse( file([
