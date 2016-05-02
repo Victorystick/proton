@@ -223,7 +223,7 @@ matchexpr.compile = function ( buffer, scope, method ) {
 };
 
 matchexpr.analyse = function ( parent, target ) {
-	const scope = this.scope = new Scope( parent );
+	const scope = this.scope = parent.child();
 
 	this.typeinstance.values.forEach( ( value, i ) => {
 		scope.set( value.id, member( target.id, alphabet[ i ] ) );

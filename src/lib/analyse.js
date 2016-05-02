@@ -3,7 +3,7 @@ import Scope from './scope.js';
 export default function analyse ( ast ) {
 	const exports = [];
 	const functions = [];
-	const scope = new Scope();
+	const scope = new Scope( null );
 
 	const result = {
 		exports,
@@ -41,7 +41,7 @@ export default function analyse ( ast ) {
 }
 
 function analyseFunction( fn, upperScope ) {
-	const scope = fn.scope = new Scope( upperScope );
+	const scope = fn.scope = upperScope.child();
 
 	fn.args.forEach( id => {
 		scope.set( id.id, id );

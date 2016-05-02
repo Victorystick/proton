@@ -1,7 +1,7 @@
 export default function Scope( parent ) {
-	this.parent = parent || null;
+	this.parent = parent;
 
-	this.names = {};
+	this.names = Object.create( null );
 }
 
 Object.assign( Scope.prototype, {
@@ -10,14 +10,22 @@ Object.assign( Scope.prototype, {
 	},
 
 	get ( name ) {
-		if ( name in this.names ) return this.names[ name ];
+		if ( name in this.names ) {
+			return this.names[ name ];
+		}
 
-		if ( this.parent ) return this.parent.get( name );
+		if ( this.parent ) {
+			return this.parent.get( name );
+		}
 
 		return null;
 	},
 
 	set ( name, value ) {
-		this.names[ name ] = value;
-	}
+		if ( name in this.names ) {
+			throw new Error( `redefining '${ name }'` );
+		}
+
+		this.names[ name ] = value;
+	},
 });
