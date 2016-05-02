@@ -1,5 +1,6 @@
 import parse, { Parser } from '../lib/parse.js';
 import {
+	call,
 	data,
 	file,
 	fn,
@@ -161,6 +162,15 @@ fn a ( x ) match x
 	it( 'parses identifiers', function () {
 		assert.deepEqual( new Parser( 'something-nice' ).parseIdentifier(),
 			identifier( 'something-nice' ) );
+	});
+
+	it( 'parses function calls', () => {
+		const a = identifier( 'a' );
+		const b = identifier( 'b' );
+
+		assert.deepEqual( parse( `fn a ( b ) c b 0` ).body, [
+			fn( a, [ b ], call( identifier( 'c' ), [ b, literal( 0 ) ] ) ),
+		]);
 	});
 
 	describe( 'handles line endings', function () {

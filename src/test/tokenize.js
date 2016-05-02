@@ -32,6 +32,12 @@ describe( 'tokenize', () => {
 		]);
 	});
 
+	it( 'numbers', () => {
+		assert.deepEqual( tokenize( '0 14 0.5' ), [
+			literal( 0 ), literal( 14 ), literal( 0.5 ), EOF,
+		]);
+	});
+
 	it( 'rejects unterminated strings', () => {
 		assert.throws( () => {
 			tokenize( '"foo' );

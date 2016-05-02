@@ -29,6 +29,7 @@ function set( arr ) {
 const identifierChars = set( 'abcdefghijklmnopqrstuvxyzABCDEFGHIJKLMNOPQRSTUVXYZ-'.split( '' ) );
 const indentChars = set( ' \t'.split( '' ) );
 const punctuationChars = set( '()'.split( '' ) );
+const numberChars = set( '0123456789'.split( '' ) );
 const quotes = set( '`"\''.split( '' ) );
 
 export function punc( kind, pos ) {
@@ -149,6 +150,10 @@ function base( tokens ) {
 			identifier( tokens, pos );
 		}
 
+		else if ( c in numberChars ) {
+			tokens.push( number( pos ) );
+		}
+
 		else if ( c in indentChars ) {
 			indentation( tokens, pos );
 		}
@@ -209,6 +214,20 @@ function punctuation( tokens, pos ) {
 	}
 
 	next();
+}
+
+function number( pos ) {
+	const start = index;
+
+	while ( next() in numberChars );
+
+	if ( char() === '.' ) {
+		do {
+			next();
+		} while( char() in numberChars );
+	}
+
+	return literal( +source.slice( start, index ), complete( pos ) );
 }
 
 function string( quote, pos ) {

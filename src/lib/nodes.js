@@ -37,6 +37,8 @@ function raise( msg ) {
 	throw err;
 }
 
+export const call = node( 'call', [ 'id', 'args' ]);
+
 export const data = node( 'data', [ 'id', 'fields' ]);
 
 Object.assign( data, {
@@ -144,7 +146,7 @@ fn.compile = function ( buffer, _ ) {
 	buffer.put( ') {\n', this.pos );
 	this.body.compile( buffer, scope, 'return ' );
 	buffer.dedent();
-	buffer.put( ';\n}', this.pos );
+	buffer.put( '\n}', this.pos );
 };
 
 export const match = node( 'match', [ 'id', 'expressions', 'pos' ]);

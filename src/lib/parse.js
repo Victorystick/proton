@@ -1,4 +1,5 @@
 import {
+	call,
 	data,
 	file,
 	fn,
@@ -18,8 +19,8 @@ export default function parse ( code, options ) {
 }
 
 export function Parser( code, opts ) {
-	opts = opts || {};
-	this.source = opts.filename || '<string source>';
+	opts = Object.assign({ filename: '<string source>' }, opts );
+	this.source = opts.filename;
 	this.location = opts.location || false;
 
 	this.tokens = tokenize( code, Object.assign( {}, opts, { location: true } ) );
@@ -138,7 +139,7 @@ Object.assign( Parser.prototype, {
 		}
 
 		if ( tok.type === 'literal' ) {
-			return this.parseString();
+			return this.parseLiteral();
 		}
 
 		return this.parsePossibleCall();
@@ -273,7 +274,19 @@ Object.assign( Parser.prototype, {
 	},
 
 	parsePossibleCall() {
-		return this.parseIdentifier();
+		const id = this.parseIdentifier();
+
+		if ( this.token().type !== 'id' ) {
+			return id;
+		}
+
+		const args = [];
+
+		for ( let tok = this.token(); tok.type !== 'punc' && tok.type !== 'eof'; tok = this.token() ) {
+			args.push( this.parseExpression() );
+		}
+
+		return call( id, args, this.positionFromStartToken( id ) );
 	},
 
 	/**

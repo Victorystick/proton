@@ -110,7 +110,7 @@ function getOr(opt, b) {
       return b;
     case 1:
       return opt.a;
-  };
+  }
 }
 ` );
 		});
